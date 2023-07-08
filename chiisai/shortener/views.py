@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, JsonResponse
 
-# Create your views here.
+from .models import Link
+
+
+def home(request):
+    return JsonResponse({"hello": "world"})
+
+
+def redirect_alias_to_url(request, alias: str):
+    link = Link.objects.get(alias=alias)
+    # TODO: increment link.hits
+    return HttpResponseRedirect(link.url)
