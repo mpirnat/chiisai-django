@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class Status(models.TextChoices):
+    ACTIVE = "A", "Active"
+    INACTIVE = "I", "Inactive"
+
+
 class Link(models.Model):
     id = models.BigAutoField(primary_key=True)
 
@@ -8,6 +13,9 @@ class Link(models.Model):
     url = models.URLField(max_length=2048)
     hits = models.PositiveBigIntegerField(default=0)
 
+    status = models.CharField(
+        max_length=1, choices=Status.choices, default=Status.ACTIVE
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

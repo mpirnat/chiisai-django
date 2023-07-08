@@ -4,8 +4,8 @@ from .models import Link
 
 
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ["alias", "url", "hits", "created", "updated"]
-    fields = ["id", "created", "updated", "alias", "url", "hits"]
+    list_display = ["alias", "url", "hits", "created", "updated", "status"]
+    fields = ["id", "created", "updated", "status", "alias", "url", "hits"]
     readonly_fields = ["id", "created", "updated"]
 
 
