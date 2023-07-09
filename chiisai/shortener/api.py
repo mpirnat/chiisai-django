@@ -27,7 +27,7 @@ def create_short_url(request, data: LinkSchema):
     try:
         alias = make_alias(url, alias=alias)
     except UncleanAlias as exc:
-        raise ninja_errors.ValidationError(str(exc))
+        raise ninja_errors.ValidationError(str(exc)) from exc
 
     link = Link(alias=data.alias, url=data.url)
     try:
@@ -37,7 +37,7 @@ def create_short_url(request, data: LinkSchema):
         if alias_was_requested:
             link = Link.objects.get(alias=alias)
             if url != link.url:
-                raise ninja_errors.HttpError(403, "Forbidden")
+                raise ninja_errors.HttpError(403, "Forbidden") from exc
 
         # Hashed to the same thing? Be idempotent
         else:

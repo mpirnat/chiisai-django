@@ -44,7 +44,9 @@ def make_hash(value: str) -> str:
     """
     Make a URL-friendly md5 hash of a value.
     """
-    hasher = md5()
+    # Disable linter complaints about md5 hashes here, this doesn't need to be
+    # cryptographically secure. The database is enforcing alias uniqueness.
+    hasher = md5()  # noqa: S324
     hasher.update(value)
 
     # Get the hashed value, being careful to strip out characters that are not
