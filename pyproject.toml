@@ -12,6 +12,7 @@ Django = "^4.2.3"
 django-ninja = "^0.22.2"
 django-ninja-apikey-mpirnat = { git = "https://github.com/mpirnat/django-ninja-apikey.git" }
 mypy = "^1.4.1"
+dj-database-url = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
