@@ -1,7 +1,11 @@
 from typing import Optional
 
+from django.db.utils import IntegrityError
+from django.shortcuts import get_object_or_404
 from ninja import Router, Schema
+from ninja import errors as ninja_errors
 
+from .alias import UncleanAlias, make_alias
 from .models import Link
 
 router = Router()
@@ -14,14 +18,35 @@ class LinkSchema(Schema):
 
 @router.post("/v1/links")
 def create_short_url(request, data: LinkSchema):
+    alias = data.alias or None
+    alias_was_requested = alias is not None
+    url = data.url
+
+    try:
+        alias = make_alias(url, alias=alias)
+    except UncleanAlias as exc:
+        raise ninja_errors.ValidationError(str(exc))
+
     link = Link(alias=data.alias, url=data.url)
-    link.save()
+    try:
+        link.save()
+    except IntegrityError as exc:
+        # That alias is already claimed; you can't have it
+        if alias_was_requested:
+            link = Link.objects.get(alias=alias)
+            if url != link.url:
+                raise ninja_errors.HttpError(403, "Forbidden")
+
+        # Hashed to the same thing? Be idempotent
+        else:
+            pass
+
     return str(link)
 
 
 @router.get("/v1/links/{alias}")
 def get_short_url_details(request, alias: str):
-    link = Link.objects.get(alias=alias)
+    link = get_object_or_404(Link, alias=alias)
     return str(link)
 
 
