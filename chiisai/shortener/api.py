@@ -4,11 +4,13 @@ from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from ninja import Router, Schema
 from ninja import errors as ninja_errors
+from ninja_apikey.security import APIKeyAuth
 
 from .alias import UncleanAlias, make_alias
 from .models import Link
 
-router = Router()
+auth = APIKeyAuth()
+router = Router(auth=APIKeyAuth())
 
 
 class LinkSchema(Schema):
