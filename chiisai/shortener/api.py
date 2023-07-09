@@ -7,7 +7,7 @@ from ninja import errors as ninja_errors
 from ninja_apikey.security import APIKeyAuth
 
 from .alias import UncleanAlias, make_alias
-from .models import Link
+from .models import Link, Status
 
 auth = APIKeyAuth()
 router = Router(auth=APIKeyAuth())
@@ -48,7 +48,7 @@ def create_short_url(request, data: LinkSchema):
 
 @router.get("/v1/links/{alias}")
 def get_short_url_details(request, alias: str):
-    link = get_object_or_404(Link, alias=alias)
+    link = get_object_or_404(Link, alias=alias, status=Status.ACTIVE)
     return str(link)
 
 
