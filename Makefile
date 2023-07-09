@@ -9,7 +9,7 @@ fmt format: # Run code formatters
 
 lint: # Run code linters
 	poetry run black --check --diff --color .
-	poetry run ruff check --select E,W,F,I,S,B --show-source chiisai
+	poetry run ruff check --show-source chiisai
 	poetry run mypy --strict chiisai
 
 test: # Run tests
