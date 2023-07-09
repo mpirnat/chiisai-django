@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from ninja import Router, Schema
 from ninja import errors as ninja_errors
-from ninja_apikey.security import APIKeyAuth
+from ninja_apikey.security import APIKeyAuth  # type: ignore
 
 from .alias import UncleanAlias, make_alias
 from .models import Link, Status

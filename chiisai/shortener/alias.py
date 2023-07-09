@@ -47,18 +47,18 @@ def make_hash(value: str) -> str:
     # Disable linter complaints about md5 hashes here, this doesn't need to be
     # cryptographically secure. The database is enforcing alias uniqueness.
     hasher = md5()  # noqa: S324
-    hasher.update(value)
+    hasher.update(bytes(value, "utf-8"))
 
     # Get the hashed value, being careful to strip out characters that are not
     # URL-safe
-    hash_ = base_encode(bytestring_to_integer(hasher.digest()))
+    hash_ = base_encode(bytestring_to_integer(hasher.digest().decode("utf-8")))
 
     return hash_
 
 
 RESERVED_WORDS = ("admin",)
 # TODO: read from a separate bad words file
-BAD_WORDS = []
+BAD_WORDS: list[str] = []
 
 
 def is_clean(value: str) -> bool:

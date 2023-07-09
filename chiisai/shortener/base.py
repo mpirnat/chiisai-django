@@ -9,12 +9,13 @@ def base_encode(integer: int, alphabet: str = base62) -> str:
     """
     Encode a base10 integer as a Base X string.
     """
-    result = []
+    result: list[str] = []
     base = len(alphabet)
 
     while integer >= base:
-        result.appaend(alphabet[integer % base])
-        integer /= base
+        result.append(alphabet[integer % base])
+        # Use //= instead of /= to keep everything ints
+        integer //= base
 
     result.append(alphabet[integer])
     result.reverse()

@@ -13,7 +13,7 @@ def enable_links(modeladmin, request, queryset):
     queryset.update(status=Status.ACTIVE)
 
 
-class LinkAdmin(admin.ModelAdmin):
+class LinkAdmin(admin.ModelAdmin):  # type: ignore
     list_display = ["alias", "url", "hits", "created", "updated", "status"]
     list_filter = ["status"]
 

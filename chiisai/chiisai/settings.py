@@ -95,7 +95,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
         raise Exception("DATABASE_URL environment variable not defined")
 
     DATABASES = {
-        "default": dj_database_url.parse(database_url),
+        "default": dj_database_url.parse(database_url),  # type: ignore
     }
 
 
