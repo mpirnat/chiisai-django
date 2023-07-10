@@ -1,8 +1,9 @@
+from datetime import datetime
 from typing import Optional
 
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
-from ninja import Router, Schema
+from ninja import Field, Router, Schema
 from ninja import errors as ninja_errors
 from ninja_apikey.security import APIKeyAuth  # type: ignore
 from pydantic import HttpUrl
@@ -14,13 +15,21 @@ auth = APIKeyAuth()
 router = Router(auth=APIKeyAuth())
 
 
-class LinkSchema(Schema):
-    alias: Optional[str] = None
+class LinkInputSchema(Schema):
+    alias: Optional[str] = Field(default=None, max_length=200)
     url: HttpUrl
 
 
-@router.post("/v1/links")
-def create_short_url(request, data: LinkSchema):
+class LinkOutputSchema(Schema):
+    alias: str
+    url: HttpUrl
+    hits: int
+    created: datetime
+    updated: datetime
+
+
+@router.post("/v1/links", response=LinkOutputSchema)
+def create_short_url(request, data: LinkInputSchema):
     alias = data.alias or None
     alias_was_requested = alias is not None
     url = data.url
@@ -52,13 +61,13 @@ def create_short_url(request, data: LinkSchema):
         else:
             pass
 
-    return str(link)
+    return link
 
 
-@router.get("/v1/links/{alias}")
+@router.get("/v1/links/{alias}", response=LinkOutputSchema)
 def get_short_url_details(request, alias: str):
     link = get_object_or_404(Link, alias=alias, status=Status.ACTIVE)
-    return str(link)
+    return link
 
 
 # Looking for an API for listing links from the collection,
