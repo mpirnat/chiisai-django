@@ -1,0 +1,5 @@
+export DEBUG=True
+export DEVELOPMENT_MODE=True
+export DJANGO_ADMIN_PATH=admin
+export DJANGO_SECRET_KEY=YourSuperSecretDjangoKeyGoesHere
+export CHIISAI_COUNT_HITS=True
