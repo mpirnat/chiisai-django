@@ -51,7 +51,7 @@ def make_hash(value: str) -> str:
 
     # Get the hashed value, being careful to strip out characters that are not
     # URL-safe
-    hash_ = base_encode(bytestring_to_integer(hasher.digest().decode("utf-8")))
+    hash_ = base_encode(bytestring_to_integer(hasher.digest()))
 
     return hash_
 

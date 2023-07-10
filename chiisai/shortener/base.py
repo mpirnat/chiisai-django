@@ -37,23 +37,24 @@ def base_decode(string_: str, alphabet: str = base62) -> int:
     return integer
 
 
-def bytestring_to_integer(bytestring: str) -> int:
+def bytestring_to_integer(bytestring: bytes) -> int:
     """
     Convert a bytestring into its equivalent base10 integer.
     """
     integer = 0
     for i, byte in enumerate(bytestring):
-        integer += ord(byte) << (8 * i)
+        integer += byte << (8 * i)
     return integer
 
 
-def integer_to_bytestring(integer: int) -> str:
+def integer_to_bytestring(integer: int) -> bytes:
     """
     Convert an integer into its equivalent bytestring.
     """
     if integer == 0:
-        return chr(integer)
+        return b""
 
+    # TODO: this isn't right in Python 3
     bytes_ = []
     while integer > 0:
         bytes_.append(chr(integer - ((integer >> 8) << 8)))

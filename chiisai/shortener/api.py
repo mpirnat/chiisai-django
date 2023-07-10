@@ -47,7 +47,7 @@ def create_short_url(request, data: LinkInputSchema):
             ]
         ) from exc
 
-    link = Link(alias=data.alias, url=data.url)
+    link = Link(alias=alias, url=url)
     try:
         link.save()
     except IntegrityError as exc:
