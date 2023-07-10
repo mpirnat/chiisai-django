@@ -18,7 +18,11 @@ test: # Run tests
 cov test-cov: # Run tests with coverage
 	poetry run pytest --cov=chiisai --cov-report=term-missing --cov-report=xml -v chiisai
 
+migrate: # Run django migrations
+	poetry run python chiisai/manage.py migrate
+
 build: # Build project
 	make install
 	make lint
 	make cov
+	make migrate
