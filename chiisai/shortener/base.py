@@ -54,10 +54,16 @@ def integer_to_bytestring(integer: int) -> bytes:
     if integer == 0:
         return b""
 
-    # TODO: this isn't right in Python 3
     bytes_ = []
     while integer > 0:
-        bytes_.append(chr(integer - ((integer >> 8) << 8)))
-        integer = integer >> 8
+        bytes_.append(bchr(integer - ((integer >> 8) << 8)))
+        integer >>= 8
 
-    return "".join(bytes_)
+    return b"".join(bytes_)
+
+
+def bchr(value: int) -> bytes:
+    """
+    Like chr, but for bytes.
+    """
+    return bytes([int(value)])
