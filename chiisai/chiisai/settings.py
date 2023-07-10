@@ -142,5 +142,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Additional application settings
-
+ADMIN_PATH = os.getenv("DJANGO_ADMIN_PATH", "admin")
 SHOULD_COUNT_HITS = os.getenv("CHIISAI_COUNT_HITS", "False") == "True"

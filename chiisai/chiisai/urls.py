@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
@@ -22,7 +23,7 @@ from shortener import views as shortener_views
 from .api import api
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(f"{settings.ADMIN_PATH}/", admin.site.urls),
     path("api/", api.urls),
     path("<slug:alias>", shortener_views.redirect_alias_to_url, name="redirect"),
     path("", shortener_views.home, name="home"),
