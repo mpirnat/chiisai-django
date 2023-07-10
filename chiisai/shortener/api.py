@@ -27,7 +27,7 @@ def create_short_url(request, data: LinkSchema):
     try:
         alias = make_alias(url, alias=alias)
     except UncleanAlias as exc:
-        raise ninja_errors.ValidationError(str(exc)) from exc
+        raise ninja_errors.ValidationError([{"msg": str(exc)}]) from exc
 
     link = Link(alias=data.alias, url=data.url)
     try:
