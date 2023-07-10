@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from ninja import Router, Schema
 from ninja import errors as ninja_errors
 from ninja_apikey.security import APIKeyAuth  # type: ignore
+from pydantic import HttpUrl
 
 from .alias import UncleanAlias, make_alias
 from .models import Link, Status
@@ -15,7 +16,7 @@ router = Router(auth=APIKeyAuth())
 
 class LinkSchema(Schema):
     alias: Optional[str] = None
-    url: str
+    url: HttpUrl
 
 
 @router.post("/v1/links")
@@ -27,7 +28,15 @@ def create_short_url(request, data: LinkSchema):
     try:
         alias = make_alias(url, alias=alias)
     except UncleanAlias as exc:
-        raise ninja_errors.ValidationError([{"msg": str(exc)}]) from exc
+        raise ninja_errors.ValidationError(
+            [
+                {
+                    "loc": ["body", "data", "alias"],
+                    "msg": str(exc),
+                    "type": "value_error.value_error",
+                }
+            ]
+        ) from exc
 
     link = Link(alias=data.alias, url=data.url)
     try:
