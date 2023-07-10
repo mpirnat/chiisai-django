@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 
 
 class Status(models.TextChoices):
@@ -28,3 +28,13 @@ class Link(models.Model):
             models.Index(fields=["url"]),
             models.Index(fields=["hits"]),
         ]
+
+    def get_queryset(self):
+        return self.__class__.objects.filter(id=self.id)
+
+    @transaction.atomic()
+    def increment_hits(self, amount: int = 1):
+        obj = self.get_queryset().select_for_update().get()
+        obj.hits += amount
+        obj.save()
+        return obj
