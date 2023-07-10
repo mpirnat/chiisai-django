@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A humble URL shortener"
 authors = ["Mike Pirnat <mpirnat@gmail.com>"]
 readme = "README.md"
-packages = [{include = "chiisai_django"}]
+packages = [{include = "chiisai"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
