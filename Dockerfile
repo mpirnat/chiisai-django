@@ -9,3 +9,5 @@ COPY . .
 # Install poetry and project dependencies
 RUN pip3 install poetry
 RUN poetry install
+
+WORKDIR /usr/src/app/chiisai
