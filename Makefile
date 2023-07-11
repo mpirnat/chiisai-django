@@ -26,3 +26,9 @@ build: # Build project
 	make lint
 	make cov
 	make migrate
+
+requirements: # Refresh requirements.txt
+	poetry export -f requirements.txt --output requirements.txt
+
+runserver: # Run django locally
+	poetry run python chiisai/manage.py runserver
